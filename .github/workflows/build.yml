@@ -1,23 +1,118 @@
-name: Build EA KING APK
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      - name: Build APK
-        run: |
-          npm install -g cordova
-          cordova create apk com.eaking.rcg "EA KING RCG"
-          cp index.html apk/www/index.html
-          cd apk
-          cordova platform add android
-          cordova build android --debug
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: EA-KING-RCG-APK
-          path: apk/platforms/android/app/build/outputs/apk/debug/*.apk
+<!DOCTYPE html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EA KING BUILDER</title>
+<style>
+*{box-sizing:border-box}body{background:#000;color:#fff;font-family:Arial;margin:0;padding:15px}h1{color:#FFD700;text-align:center;margin:10px 0}.tabs{display:flex;gap:10px;margin:15px 0}button.tab{flex:1;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:10px;font-weight:bold}button.tab.active{background:#FFD700;color:#000;border-color:#FFD700}.card{background:#111;border:1px solid #FFD700;border-radius:15px;padding:18px;margin:10px 0}label{color:#FFD700;font-size:13px;display:block;margin-top:10px;text-align:left}input,select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #444;background:#000;color:#fff;margin-top:5px}textarea{height:140px;font-family:monospace;font-size:12px}.btn{background:#FFD700;color:#000;padding:14px;border:none;border-radius:10px;font-weight:bold;width:100%;margin-top:12px;font-size:15px}.keybox{background:#000;border:1px dashed #0f0;padding:12px;border-radius:10px;color:#0f0;font-weight:bold;text-align:center;margin-top:12px;word-break:break-all;display:none}.codebox{background:#000;border:1px solid #333;padding:12px;border-radius:10px;color:#0f0;white-space:pre-wrap;font-size:11px;max-height:300px;overflow:auto;margin-top:10px;display:none}
+</style></head><body>
+<h1>👑 EA KING BUILDER</h1>
+<p style="text-align:center;color:#888;font-size:13px">Build Your Own Trading Robots</p>
+
+<div class="tabs">
+<button class="tab active" onclick="show('builder',this)">🤖 BUILDER</button>
+<button class="tab" onclick="show('license',this)">🔑 LICENSE</button>
+</div>
+
+<div id="builder" class="card">
+<label>Robot Name</label><input id="eaName" placeholder="e.g. EA KING Gold Scalper" value="EA KING Scalper">
+<label>Strategy</label><select id="strat">
+<option value="RSI_MA">RSI + Moving Average</option>
+<option value="MA_CROSS">MA Cross (Fast/Slow)</option>
+<option value="BREAKOUT">Breakout + ATR</option>
+<option value="GOLD_SCALP">Gold Scalper (M1/M5)</option>
+</select>
+<label>Lot Size</label><input id="lot" type="number" value="0.10" step="0.01">
+<label>Stop Loss (pips)</label><input id="sl" type="number" value="300">
+<label>Take Profit (pips)</label><input id="tp" type="number" value="600">
+<label>Magic Number</label><input id="magic" type="number" value="2026">
+<button class="btn" onclick="buildEA()">⚙️ GENERATE ROBOT CODE (MQL5)</button>
+<div id="mqcode" class="codebox"></div>
+<button class="btn" id="copyBtn" style="display:none;background:#fff" onclick="copyCode()">📋 COPY CODE</button>
+</div>
+
+<div id="license" class="card" style="display:none">
+<label>Client Name</label><input id="client" placeholder="e.g. Luyanda Mkhize">
+<label>Trading Account Number</label><input id="acc" placeholder="e.g. 1234567">
+<label>Your Robot Name</label><input id="robotFor" placeholder="e.g. EA KING Gold Scalper">
+<label>Expiry (Days)</label><select id="expiry"><option value="30">30 Days</option><option value="90">90 Days</option><option value="180">180 Days</option><option value="365" selected>365 Days - 1 Year</option><option value="9999">Lifetime</option></select>
+<button class="btn" onclick="genKey()">🔑 GENERATE LICENSE KEY</button>
+<div id="k" class="keybox"></div>
+<button class="btn" id="shareBtn" style="display:none;background:#25D366;color:#fff" onclick="shareWA()">📲 SHARE VIA WHATSAPP</button>
+</div>
+
+<script>
+function show(id,el){
+document.getElementById('builder').style.display=id=='builder'?'block':'none';
+document.getElementById('license').style.display=id=='license'?'block':'none';
+document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+}
+function genKey(){
+let c=document.getElementById('client').value||'CLIENT';
+let a=document.getElementById('acc').value||'0000000';
+let r1=Math.random().toString(36).substr(2,4).toUpperCase();
+let r2=Math.random().toString(36).substr(2,5).toUpperCase();
+let r3=Math.random().toString(36).substr(2,4).toUpperCase();
+let key=`EAKING-${r1}-${a.substr(-4)}-${r2}-${r3}-2026`;
+document.getElementById('k').innerText=key+'\n\nClient: '+c+'\nAccount: '+a+'\nRobot: '+(document.getElementById('robotFor').value||'EA KING');
+document.getElementById('k').style.display='block';
+document.getElementById('shareBtn').style.display='block';
+window.lastKey=key;
+}
+function shareWA(){
+let txt=encodeURIComponent('👑 *EA KING LICENSE*\n\n🔑 Key: '+window.lastKey+'\n👤 Client: '+document.getElementById('client').value+'\n');
+window.open('https://wa.me/?text='+txt,'_blank');
+}
+function buildEA(){
+let name=document.getElementById('eaName').value;
+let lot=document.getElementById('lot').value;
+let sl=document.getElementById('sl').value;
+let tp=document.getElementById('tp').value;
+let magic=document.getElementById('magic').value;
+let strat=document.getElementById('strat').value;
+let code=`//+------------------------------------------------------------------+
+//| ${name} - Built with EA KING BUILDER
+//| Strategy: ${strat} | Lot: ${lot} | SL: ${sl} | TP: ${tp}
+//| Magic: ${magic} | License Protected
+//+------------------------------------------------------------------+
+#property strict
+input double LotSize = ${lot};
+input int StopLoss = ${sl};
+input int TakeProfit = ${tp};
+input int Magic = ${magic};
+input string LicenseKey = "";
+
+bool CheckLicense(){
+ if(StringLen(LicenseKey)<10) return false;
+ if(StringFind(LicenseKey,"EAKING")<0) return false;
+ return true; // Add your own account validation here
+}
+
+int OnInit(){
+ if(!CheckLicense()){ Print("Invalid License! Contact EA KING"); return(INIT_FAILED);}
+ return(INIT_SUCCEEDED);
+}
+
+void OnTick(){
+ if(!CheckLicense()) return;
+ // --- ${strat} LOGIC ---
+ double maFast = iMA(_Symbol,0,10,0,MODE_EMA,PRICE_CLOSE);
+ double maSlow = iMA(_Symbol,0,20,0,MODE_EMA,PRICE_CLOSE);
+ double rsi = iRSI(_Symbol,0,14,PRICE_CLOSE);
+ bool buySignal = (maFast>maSlow && rsi<70);
+ bool sellSignal = (maFast<maSlow && rsi>30);
+ 
+ if(buySignal && PositionsTotal()==0){
+   double slP = (StopLoss>0)? SymbolInfoDouble(_Symbol,SYMBOL_BID)-StopLoss*_Point*10 : 0;
+   double tpP = (TakeProfit>0)? SymbolInfoDouble(_Symbol,SYMBOL_BID)+TakeProfit*_Point*10 : 0;
+   trade.Buy(LotSize,_Symbol,0,slP,tpP);
+ }
+ if(sellSignal && PositionsTotal()>0) trade.PositionClose(_Symbol);
+}
+#include <Trade/Trade.mqh>
+CTrade trade;
+`;
+document.getElementById('mqcode').innerText=code;
+document.getElementById('mqcode').style.display='block';
+document.getElementById('copyBtn').style.display='block';
+}
+function copyCode(){navigator.clipboard.writeText(document.getElementById('mqcode').innerText); alert('Code Copied! Paste in MetaEditor');}
+</script></body></html>
