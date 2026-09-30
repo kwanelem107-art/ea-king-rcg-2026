@@ -1,0 +1,31 @@
+name: Build EA KING APK
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build APK
+        run: |
+          echo "EA KING RCG - Building"
+      - name: Setup
+        uses: actions/upload-artifact@v3
+        with:
+          name: EA-KING-RCG
+          path: README.md
+Wait - King, that was test. For your REAL APK we need your app files.
+
+*EASIER WAY:*
+
+1. Click *uploading an existing file* (blue link in your screenshot)
+2. Now I will give you 2 files to upload
+
+But first - tell me King:
+
+What you want APK to DO?
+- A) EA License Generator (generate `EAKING-RCG-XXXX` keys)?
+- B) RCG Markets Registration + EA Activator?
+
+Reply *A or B* and I send you the exact files to drag & drop there. After you upload, GitHub will build your APK automatically and give you download link!
+
+You are 2 steps away from your APK King 👑
