@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EA KING CONNECT V6</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#0a0e16;color:#fff;font-family:Arial;padding:12px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:8px 0;margin-bottom:10px}
+.top h2{font-size:14px;color:#888}.top b{color:#fff}
+.card{background:#1a1f2e;border:1px solid #2a2f42;border-radius:20px;padding:18px;margin-bottom:14px}
+.card h3{font-size:18px;margin-bottom:14px}label{color:#9aa0b3;font-size:13px;display:block;margin-top:14px;margin-bottom:6px}
+input,select,textarea{width:100%;padding:14px;background:#0f131f;border:1px solid #2a2f42;border-radius:12px;color:#fff;font-size:14px}
+textarea{height:160px;resize:vertical;line-height:1.5}textarea.tall{height:320px}
+.row{display:flex;gap:10px;align-items:center}.row>div{flex:1}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:800;font-size:14px;margin-top:12px;cursor:pointer}
+.btn-white{background:#e9eef5;color:#111}.btn-dark{background:#1f2536;color:#fff;border:1px solid #2a2f42}.btn-red{background:#e53955;color:#fff}.btn-gold{background:#FFD700;color:#000}
+.pair{background:#0f131f;border:1px solid #2a2f42;border-radius:12px;padding:12px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.pair b{font-size:14px}.min{background:#1a1f2e;border:1px solid #2a2f42;border-radius:20px;padding:6px 14px;font-size:13px;margin-left:8px}
+.x{color:#ff6b7a;font-weight:900;cursor:pointer;padding:4px 8px}
+.badge{background:#FFD700;color:#000;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:900}
+.status{display:inline-flex;padding:6px 14px;background:#1a1f2e;border:1px solid #2a2f42;border-radius:20px;font-size:13px}
+.tabs{display:flex;gap:8px;background:#1a1f2e;padding:6px;border-radius:12px;margin-bottom:14px;overflow:auto}
+.tab{flex:1;white-space:nowrap;padding:10px 12px;background:transparent;border:none;color:#888;border-radius:8px;font-weight:800;font-size:12px}
+.tab.active{background:#FFD700;color:#000}
+.keybox{background:#000;border:1px dashed #00ff88;padding:12px;border-radius:10px;color:#00ff88;text-align:center;font-weight:800;margin-top:12px;word-break:break-all;display:none}
+</style></head><body>
+
+<div class="top"><div><h2>EA KING CONNECT V6<br><b style="color:#FFD700">Bubble Bee Edition</b></div><div style="display:flex;gap:8px"><button class="status">⚙️ Settings</button><button class="status">👥 Clients 1</button></div></div>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('general',this)">⚙️ General</button>
+<button class="tab" onclick="showTab('pairs',this)">💱 Trading Pairs</button>
+<button class="tab" onclick="showTab('ai',this)">🧠 AI Settings</button>
+<button class="tab" onclick="showTab('scanner',this)">📡 Scanner</button>
+<button class="tab" onclick="showTab('licenses',this)">🔑 Licenses</button>
+</div>
+
+<!-- GENERAL -->
+<div id="general" class="card">
+<h3>General</h3>
+<label>EA Name</label><input id="eaName" value="Bubble Bee V6">
+<label>Short Description</label><input id="desc" value="London/NY sniper, M15 EMA200 trend, M5 EMA9/21 + BB + RSI sniper">
+<label>Status</label><select style="width:auto"><option selected>Active</option><option>Inactive</option></select>
+
+<div style="margin-top:18px"><h3>Media</h3>
+<label>Robot Image</label>
+<div class="row"><div style="flex:0"><div style="width:70px;height:70px;background:#FFD700;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px">🐝</div></div><div><button class="btn-dark" style="margin:0;padding:10px">⬆️ Upload Image</button><small style="color:#777;font-size:11px;display:block;margin-top:6px">PNG, JPG, etc. (512x512px recommended, max 10MB)</small></div></div>
+<label>Promotional Video (Optional)</label>
+<div class="row"><div style="flex:0"><div style="width:70px;height:70px;background:#1a1f2e;border:1px solid #2a2f42;border-radius:12px;display:flex;align-items:center;justify-content:center">⬆️</div></div><div><button class="btn-dark" style="margin:0;padding:10px">⬆️ Upload Video</button><small style="color:#777;font-size:11px;display:block;margin-top:6px">MP4, WebM, etc. (max 50MB)</small></div></div>
+</div>
+<button class="btn btn-gold" onclick="saveGeneral()">💾 Save General Settings</button>
+</div>
+
+<!-- TRADING PAIRS -->
+<div id="pairs" class="card" style="display:none">
+<h3>Trading Pairs</h3>
+<input id="symbolInput" placeholder="Enter symbol (e.g., EURUSD)">
+<div class="row" style="margin-top:8px"><div><label style="margin:0">Min Lot:</label></div><div style="flex:0"><input id="lotInput" value="0.01" style="width:90px"></div><div><button class="btn-white" style="margin:0" onclick="addPair()">Add</button></div></div>
+<div id="pairList" style="margin-top:12px"></div>
+<button class="btn btn-gold" onclick="showTab('ai',document.querySelectorAll('.tab')[2])">Next: AI Settings →</button>
+</div>
+
+<!-- AI SETTINGS -->
+<div id="ai" class="card" style="display:none">
+<h3>AI Settings</h3>
+<label>Robot AI Context</label>
+<textarea id="aiContext" class="tall">Elite disciplined day trader robot. Personality: ruthless sniper, zero emotion, patient, no revenge, pure killer instinct. Trades ONLY London 08:00-12:00 GMT & New York 13:00-17:00 GMT, avoids Asian chop, pauses 30min before/after red news, spread filter <25 pts active. Pairs: XAUUSD king 10:00-19:00 SAST for explosive Gold moves, GBPUSD cleanest EMA200 trend 10:00-14:00 SAST, EURUSD lowest spread consistency, GBPJPY dragon for NY volatility, NAS100/US30 only NY open 15:30-19:00 SAST. System: M15 EMA200 trend boss, M5 EMA9/21 cross + Bollinger Band expansion + RSI 55-70 buys / 30-45 sells + liquidity sweep of last 10 candles + engulfing candle close confirmation. Risk: ATRx1.5 SL (150-250 pts Gold, 15-25 pips FX), 1:1.5 TP, close 50% at +100pts, SL to BE, trail 80pts by EMA21. Rules: 1% risk, max2 concurrent, max3 losses/day then stop, no martingale, no grid, no hedge. Discipline=profit BOOM WOW! For RCG MT5!</textarea>
+<small style="color:#777">Customize how your robot talks to users in the mobile app. (<span id="charCount">922</span>/1000)</small>
+<button class="btn btn-gold" onclick="saveAI()">💾 Save AI Context</button>
+</div>
+
+<!-- SCANNER STRATEGY -->
+<div id="scanner" class="card" style="display:none">
+<h3>Scanner Strategy</h3>
+<label>MQL5 Scanner Code (Your Bubble Bee V6 Logic)</label>
+<textarea id="scannerCode" class="tall" style="font-family:monospace;font-size:12px">void ScanBoard(){string P[]={"XAUUSD","EURUSD","GBPUSD","GBPJPY","NAS100","US30","USDJPY","AUDUSD"};for(int i=0;i<8;i++){string s=P[i];if(!IsLondonNY()||Spread(s)>25||IsNews()||iADX(s,PERIOD_M15,14)<20)continue;double m200=iMA(s,PERIOD_M15,200,0,MODE_EMA,PRICE_CLOSE);double m9=iMA(s,PERIOD_M5,9,0,MODE_EMA,PRICE_CLOSE);double m21=iMA(s,PERIOD_M5,21,0,MODE_EMA,PRICE_CLOSE);double r=iRSI(s,PERIOD_M5,14,PRICE_CLOSE);double a=iATR(s,PERIOD_M5,14);bool buy=iClose(s,PERIOD_M5,0)>m200&&m9>m21&&r>55&&r<70&&Sweep(s)&&Engulf(s)&&BBExp(s);bool sell=iClose(s,PERIOD_M5,0)<m200&&m9<m21&&r<45&&r>30&&Sweep(s)&&Engulf(s)&&BBExp(s);if(buy)Push(s,"BUY",a*1.5,1.5);if(sell)Push(s,"SELL",a*1.5,1.5);}}//V7 Elite Top EA Scanner: London/NY+spread+news+ADX>20+M15 EMA200 trend+M5 EMA9/21+RSI 55-70/30-45+liquidity sweep+engulf+BB expansion=2-4 A+ sniper trades/day 1% risk 1:1.5 TP 50% BE+80 trail</textarea>
+<button class="btn btn-gold" onclick="saveScanner()">⚡ Build & Deploy Bubble Bee V6</button>
+<div id="buildRes" class="keybox" style="border-color:#FFD700;color:#FFD700"></div>
+</div>
+
+<!-- LICENSES -->
+<div id="licenses" class="card" style="display:none">
+<h3 style="font-size:28px">Licenses</h3><p style="color:#888;font-size:13px;margin-bottom:12px">Manage licenses created for your clients</p>
+<button class="btn btn-white" onclick="genLicense()">+ Create License</button>
+<button class="btn btn-dark" onclick="location.reload()">🔄 Refresh</button>
+<div class="row"><button class="btn btn-dark">⏻ Deactivate All</button><button class="btn btn-red">🗑️ Delete All</button></div>
+<div style="background:#332a00;border:1px solid #FFD70055;border-radius:12px;padding:12px;margin-top:12px"><b style="color:#FFD700">⚠️ 1 client has not connected their account</b><br><small style="color:#aaa">These clients received a license but haven't linked their MetaTrader account yet. They won't receive any trades until they connect.</small></div>
+<div class="row" style="margin-top:12px"><span class="badge">All (1)</span><span class="status">📶 Connected (0)</span><span class="status">📡 Not Connected (1)</span></div>
+<input placeholder="🔍 Search licenses or clients..." style="margin-top:12px">
+<button class="btn btn-dark">🔽 Filter</button>
+<div style="margin-top:14px"><b>License Keys</b><br><small style="color:#888">All licenses you've created for your clients</small>
+<div id="licenseList" style="margin-top:10px"></div>
+</div>
+
+<div id="createLicenseBox" style="display:none;margin-top:12px;background:#0f131f;padding:14px;border-radius:12px;border:1px solid #2a2f42">
+<label>Client Name</label><input id="clientName" placeholder="Luyanda Mkhize">
+<label>MT5 Account</label><input id="clientAcc" placeholder="12345678">
+<label>Expiry</label><select id="exp"><option>30 Days</option><option selected>365 Days</option><option>Lifetime</option></select>
+<button class="btn btn-gold" onclick="doCreateLicense()">🔑 Generate License Key</button>
+<div id="k" class="keybox"></div>
+<button class="btn btn-dark" id="waBtn" style="display:none" onclick="shareWA()">📲 Share WhatsApp</button>
+</div>
+</div>
+
+<script>
+let pairs = [
+ {s:'NAS100',lot:'0.01'},
+ {s:'XAUUSD',lot:'0.01'},
+ {s:'EURUSD',lot:'0.01'},
+ {s:'GBPUSD',lot:'0.01'},
+ {s:'USDJPY',lot:'0.01'},
+ {s:'GBPJPY',lot:'0.01'}
+];
+let licenses = JSON.parse(localStorage.getItem('bb_licenses')||'[]');
+function showTab(id,el){
+ ['general','pairs','ai','scanner','licenses'].forEach(x=>document.getElementById(x).style.display=x==id?'block':'none');
+ document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+ if(id=='pairs') renderPairs(); if(id=='licenses') renderLicenses();
+}
+function renderPairs(){
+ let h=''; pairs.forEach((p,i)=>{ h+=`<div class="pair"><div><b>${p.s}</b> <span class="min">Min Lot: ${p.lot}</span></div><span class="x" onclick="remPair(${i})">✕</span></div>`});
+ document.getElementById('pairList').innerHTML=h;
+}
+function addPair(){
+ let s=document.getElementById('symbolInput').value.trim().toUpperCase(); let lot=document.getElementById('lotInput').value||'0.01';
+ if(!s) return alert('Enter symbol'); pairs.push({s:s,lot:lot}); document.getElementById('symbolInput').value=''; renderPairs();
+}
+function remPair(i){ pairs.splice(i,1); renderPairs(); }
+function saveGeneral(){ alert('✅ General Saved: '+document.getElementById('eaName').value); }
+function saveAI(){ alert('✅ AI Context Saved - '+document.getElementById('aiContext').value.length+' chars'); }
+function saveScanner(){
+ document.getElementById('buildRes').innerHTML=`✅ Bubble Bee V6 Built!<br><br><small style="color:#fff">EA: ${document.getElementById('eaName').value}<br>Pairs: ${pairs.map(p=>p.s).join(', ')}<br>Strategy: London/NY + EMA200 + EMA9/21 + RSI + BB + Sweep + Engulf<br><br>Ready for RCG MT5! Go to Licenses tab</small>`;
+ document.getElementById('buildRes').style.display='block';
+}
+function genLicense(){ document.getElementById('createLicenseBox').style.display='block'; window.scrollTo(0,document.body.scrollHeight); }
+function doCreateLicense(){
+ let c=document.getElementById('clientName').value||'CLIENT'; let a=document.getElementById('clientAcc').value||'0000000';
+ let r1=Math.random().toString(36).substr(2,4).toUpperCase(); let r2=Math.random().toString(36).substr(2,4).toUpperCase();
+ let key=`BBV6-${r1}-${a.slice(-4)}-${r2}-2026`;
+ let lic={name:c,acc:a,key:key,date:new Date().toLocaleDateString(),exp:document.getElementById('exp').value,status:'Not Connected'};
+ licenses.push(lic); localStorage.setItem('bb_licenses',JSON.stringify(licenses));
+ window.lastKey=key; window.lastClient=c;
+ document.getElementById('k').innerHTML=`🔑 ${key}<br><small style="color:#fff">Client: ${c}<br>Acc: ${a} LOCKED</small>`;
+ document.getElementById('k').style.display='block'; document.getElementById('waBtn').style.display='block';
+ renderLicenses();
+}
+function renderLicenses(){
+ if(licenses.length==0){document.getElementById('licenseList').innerHTML='<p style="color:#666;font-size:12px">No licenses yet</p>';return}
+ let h=''; licenses.forEach(l=>{h+=`<div class="pair"><div><b>${l.name}</b> - Acc: ${l.acc}<br><small style="color:#00ff88">${l.key}</small><br><small style="color:#888">${l.date} • ${l.exp} • ${l.status}</small></div></div>`});
+ document.getElementById('licenseList').innerHTML=h;
+}
+function shareWA(){
+ let txt=encodeURIComponent(`👑 EA KING BUBBLE BEE V6 LICENSE\n\n🔑 Key: ${window.lastKey}\n👤 Client: ${window.lastClient}\n\nPaste in EA > LicenseKey to activate`);
+ window.open('https://wa.me/?text='+txt,'_blank');
+}
+document.getElementById('aiContext').addEventListener('input',e=>{document.getElementById('charCount').innerText=e.target.value.length});
+renderPairs(); renderLicenses();
+</script></body></html>
