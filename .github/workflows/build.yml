@@ -1,0 +1,23 @@
+name: Build EA KING APK
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Build APK
+        run: |
+          npm install -g cordova
+          cordova create apk com.eaking.rcg "EA KING RCG"
+          cp index.html apk/www/index.html
+          cd apk
+          cordova platform add android
+          cordova build android --debug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: EA-KING-RCG-APK
+          path: apk/platforms/android/app/build/outputs/apk/debug/*.apk
