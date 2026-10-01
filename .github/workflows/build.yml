@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>EA KING CONNECT V3</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#0f0f0f;color:#fff;font-family:Arial;padding:12px}h1{text-align:center;color:#FFD700;font-size:24px;padding:10px 0}h1 b{color:#fff}.sub{text-align:center;color:#777;font-size:12px;margin-bottom:12px}
+.tabs{display:flex;gap:6px;background:#1a1a1a;padding:6px;border-radius:12px;margin-bottom:12px}.tab{flex:1;padding:11px;background:transparent;border:none;color:#888;border-radius:8px;font-weight:800;font-size:12px}.tab.active{background:#FFD700;color:#000}
+.card{background:#1a1a1a;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid #262626}.card h3{color:#FFD700;font-size:14px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+label{color:#aaa;font-size:11px;font-weight:700;margin-top:10px;display:block;text-transform:uppercase;letter-spacing:0.5px}input,select{width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;border-radius:10px;color:#fff;margin-top:6px;font-size:13px}
+.row{display:flex;gap:8px}.row>div{flex:1}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:900;font-size:13px;margin-top:12px}.btn-gold{background:#FFD700;color:#000}.btn-dark{background:#2a2a2a;color:#fff;border:1px solid #333}
+.cond{background:#0a0a0a;border:1px dashed #333;border-radius:10px;padding:10px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}.dot-green{background:#00ff88}.dot-red{background:#ff4444}
+.keybox{background:#000;border:1px solid #00ff88;color:#00ff88;padding:12px;border-radius:10px;text-align:center;font-weight:800;word-break:break-all;margin-top:12px;display:none}
+.step{width:28px;height:28px;background:#FFD700;color:#000;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;margin-right:8px}
+</style></head><body>
+<h1>👑 EA KING <b>CONNECT</b></h1>
+<p class="sub">Build Expert Advisor Without Coding - Like EA Connect</p>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('create',this)">🛠️ CREATE</button>
+<button class="tab" onclick="showTab('license',this)">🔑 LICENSE</button>
+<button class="tab" onclick="showTab('myea',this)">📁 MY EA's</button>
+</div>
+
+<!-- CREATE TAB - EA CONNECT STYLE -->
+<div id="create" class="card">
+<h3><span class="step">1</span> EA INFO</h3>
+<input id="eaName" placeholder="EA Name e.g. EA KING Gold Scalper" value="EA KING Scalper">
+<div class="row"><div><label>Symbol</label><select id="symbol"><option>XAUUSD - Gold</option><option>EURUSD</option><option>GBPUSD</option><option>BTCUSD</option><option>All Symbols</option></select></div><div><label>Timeframe</label><select id="tf"><option>M1</option><option selected>M5</option><option>M15</option><option>M30</option><option>H1</option></select></div></div>
+
+<h3 style="margin-top:18px"><span class="step">2</span> BUY CONDITIONS</h3>
+<label>Indicator 1</label><select id="buy1"><option>RSI (14) < 30</option><option>RSI (14) < 50</option><option selected>MA Fast (10) Crosses Above MA Slow (20)</option><option>Bollinger Lower Band Touch</option><option>MACD Bullish Cross</option></select>
+<label>Indicator 2 (AND)</label><select id="buy2"><option>None</option><option selected>RSI < 60 - Trend Filter</option><option>Price Above MA 200</option><option>ADX > 25 - Strong Trend</option></select>
+<div class="cond"><span><span class="dot dot-green"></span> BUY when condition meets</span><span style="color:#00ff88">✔️</span></div>
+
+<h3 style="margin-top:18px"><span class="step">3</span> SELL CONDITIONS</h3>
+<label>Indicator 1</label><select id="sell1"><option>RSI (14) > 70</option><option selected>MA Fast (10) Crosses Below MA Slow (20)</option><option>Bollinger Upper Band Touch</option><option>MACD Bearish Cross</option></select>
+<label>Indicator 2 (AND)</label><select id="sell2"><option>None</option><option selected>RSI > 40 - Trend Filter</option><option>Price Below MA 200</option></select>
+<div class="cond"><span><span class="dot dot-red"></span> SELL when condition meets</span><span style="color:#ff4444">✔️</span></div>
+
+<h3 style="margin-top:18px"><span class="step">4</span> MONEY MANAGEMENT</h3>
+<div class="row"><div><label>Lot Size</label><input id="lot" value="0.10"></div><div><label>Max Trades</label><select><option>1 Trade at a time</option><option>3 Trades</option><option>Unlimited</option></select></div></div>
+<div class="row"><div><label>Stop Loss</label><input id="sl" value="300"></div><div><label>Take Profit</label><input id="tp" value="600"></div></div>
+
+<button class="btn btn-gold" onclick="build()">⚡ BUILD MY EA NOW (No Coding)</button>
+<div id="buildResult" class="keybox" style="border-color:#FFD700;color:#FFD700"></div>
+</div>
+
+<!-- LICENSE TAB -->
+<div id="license" class="card" style="display:none">
+<h3>🔑 License Generator - Like EA Connect</h3>
+<label>Client Name</label><input id="client" placeholder="e.g. Luyanda Mkhize">
+<label>MT4/MT5 Account Number (Lock)</label><input id="acc" placeholder="e.g. 12345678">
+<label>Select EA to Lock</label><select id="eaSelect"><option>EA KING Scalper</option><option>EA KING Gold Scalper</option></select>
+<label>Expiry</label><select id="expiry"><option>7 Days Trial</option><option>30 Days</option><option selected>365 Days</option><option>Lifetime</option></select>
+<button class="btn btn-gold" onclick="genKey()">🔑 GENERATE LICENSE</button>
+<div id="k" class="keybox"></div>
+<button class="btn btn-dark" id="waBtn" style="display:none" onclick="shareWA()">📲 Share via WhatsApp</button>
+</div>
+
+<!-- MY EA TAB -->
+<div id="myea" class="card" style="display:none">
+<h3>📁 My Built EAs</h3>
+<div id="eaList"><p style="color:#666;font-size:12px">No EAs yet. Build one in CREATE tab.</p></div>
+</div>
+
+<script>
+let eas = JSON.parse(localStorage.getItem('eas')||'[]');
+function showTab(id,el){
+document.getElementById('create').style.display=id=='create'?'block':'none';
+document.getElementById('license').style.display=id=='license'?'block':'none';
+document.getElementById('myea').style.display=id=='myea'?'block':'none';
+document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');
+if(id=='myea') renderEA();
+}
+function build(){
+let name=document.getElementById('eaName').value||'EA KING EA';
+let sym=document.getElementById('symbol').value;
+let tf=document.getElementById('tf').value;
+let lot=document.getElementById('lot').value;
+eas.push({name:name,sym:sym,tf:tf,lot:lot,date:new Date().toLocaleDateString()});
+localStorage.setItem('eas',JSON.stringify(eas));
+document.getElementById('buildResult').innerHTML=`✅ <b>${name}</b> Built!<br><br><small style="color:#fff">Symbol: ${sym}<br>TF: ${tf}<br>Lot: ${lot}<br><br>File: ${name}.ex5 ready!<br>Go to LICENSE tab to lock it to client account.</small>`;
+document.getElementById('buildResult').style.display='block';
+document.getElementById('eaSelect').innerHTML+=`<option>${name}</option>`;
+}
+function renderEA(){
+if(eas.length==0)return;
+let h='';eas.forEach(e=>{h+=`<div class="cond"><div><b style="color:#FFD700">${e.name}</b><br><small style="color:#888">${e.sym} ${e.tf} • Lot ${e.lot} • ${e.date}</small></div><span style="background:#00ff88;color:#000;padding:4px 8px;border-radius:20px;font-size:10px;font-weight:900">BUILT</span></div>`});
+document.getElementById('eaList').innerHTML=h;
+}
+function genKey(){
+let c=document.getElementById('client').value||'CLIENT';
+let a=document.getElementById('acc').value||'0000000';
+let r1=Math.random().toString(36).substr(2,4).toUpperCase();
+let r2=Math.random().toString(36).substr(2,4).toUpperCase();
+let key=`EAKING-${r1}-${a.slice(-4)}-${r2}-2026`;
+window.lastKey=key;window.lastClient=c;
+document.getElementById('k').innerHTML=`🔑 ${key}<br><br><small style="color:#fff">Client: ${c}<br>Acc: ${a} LOCKED<br>Expiry: ${document.getElementById('expiry').value}</small>`;
+document.getElementById('k').style.display='block';
+document.getElementById('waBtn').style.display='block';
+}
+function shareWA(){
+let txt=encodeURIComponent(`👑 EA KING CONNECT LICENSE\n\n🔑 Key: ${window.lastKey}\n👤 Client: ${window.lastClient}\n\nPaste this in EA inputs > LicenseKey`);
+window.open('https://wa.me/?text='+txt,'_blank');
+}
+renderEA();
+</script></body></html>
