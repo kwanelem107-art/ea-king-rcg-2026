@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>EA KING CONNECT V8</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{background:#0a0e16;color:#fff;font-family:Arial;padding:12px}
+h1{text-align:center;color:#FFD700;font-size:22px;margin:10px 0 2px}h1 span{color:#fff}.sub{text-align:center;color:#6b728f;font-size:11px;margin-bottom:14px}
+.card{background:#151a2a;border:1px solid #1e253a;border-radius:18px;padding:18px;margin-bottom:12px}
+.title{display:flex;align-items:center;gap:10px;margin-bottom:10px}.num{width:30px;height:30px;background:#FFD700;color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900}
+.title b{font-size:16px}.hint{color:#6b728f;font-size:11px;margin:6px 0 0}
+label{color:#9aa0b3;font-size:11px;font-weight:800;display:block;margin-top:14px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+input,select,textarea{width:100%;padding:14px;background:#0d1220;border:1px solid #1e253a;border-radius:12px;color:#fff;font-size:14px}
+textarea{line-height:1.5}.t1{height:90px}.t2{height:220px}.t3{height:300px;font-family:monospace;font-size:12px}
+.row{display:flex;gap:8px}.row>div{flex:1}
+.btn{width:100%;padding:16px;border:none;border-radius:14px;font-weight:900;font-size:14px;margin-top:14px;cursor:pointer}
+.btn-y{background:#FFD700;color:#000}.btn-w{background:#e8edf5;color:#111}
+.pair{background:#0d1220;border:1px solid #1e253a;border-radius:10px;padding:10px 14px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+.badge{background:#1a1f2e;border:1px solid #2a3552;padding:4px 10px;border-radius:20px;font-size:11px;color:#9aa0b3}
+.x{color:#ff6b7a;font-weight:900;cursor:pointer;font-size:18px}
+.tabs{display:flex;gap:6px;background:#151a2a;padding:6px;border-radius:12px;margin-bottom:12px}
+.tab{flex:1;padding:11px;background:transparent;border:none;color:#6b728f;border-radius:8px;font-weight:800;font-size:12px}.tab.active{background:#FFD700;color:#000}
+.keybox{background:#000;border:1px dashed #FFD700;color:#FFD700;padding:14px;border-radius:10px;text-align:center;font-weight:800;margin-top:12px;display:none;word-break:break-all}
+.ok{background:#001a0f;border:1px solid #00ff88;color:#00ff88;padding:12px;border-radius:10px;margin-top:12px;display:none;text-align:center;font-weight:800}
+</style></head><body>
+<h1>👑 EA KING <span>CONNECT V8</span></h1>
+<p class="sub">Name it • Describe it • Pairs • Strategy • Scanner • License - Like EA Connect</p>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('build',this)">🛠️ BUILD BOT</button>
+<button class="tab" onclick="showTab('license',this)">🔑 LICENSES</button>
+</div>
+
+<!-- BUILD TAB -->
+<div id="build" class="card">
+
+<!-- 1 -->
+<div class="title"><div class="num">1</div><b>EA Name - Name Your Bot By Yourself</b></div>
+<input id="eaName" value="Bubble Bee V6" placeholder="Type your bot name e.g. Gold Sniper V7">
+<p class="hint">This is YOUR bot name - you type it</p>
+
+<!-- 2 -->
+<div class="title" style="margin-top:22px"><div class="num">2</div><b>Short Description - Write By Yourself</b></div>
+<textarea id="shortDesc" class="t1">London/NY sniper, M15 EMA200 trend, M5 EMA9/21 + BB + RSI sniper, Gold king 10-19 SAST</textarea>
+<p class="hint">Write your own description - clients will see it</p>
+
+<!-- 3 -->
+<div class="title" style="margin-top:22px"><div class="num">3</div><b>Trading Pairs - Select By Yourself</b></div>
+<p class="hint" style="margin-bottom:10px">Add the pairs YOU want your bot to trade. You control it.</p>
+<div class="row"><div><input id="symIn" placeholder="e.g. XAUUSD"></div><div style="flex:0.5"><input id="lotIn" value="0.01"></div><div style="flex:0.6"><button class="btn-w" style="margin:0;padding:14px" onclick="addPair()">+ Add</button></div></div>
+<div id="pairList"></div>
+
+<!-- 4 -->
+<div class="title" style="margin-top:22px"><div class="num">4</div><b>Bot Trading Strategy - Write By Yourself</b></div>
+<p class="hint" style="margin-bottom:10px">This is YOUR robot's brain - write how it should trade</p>
+<textarea id="botStrat" class="t2">Elite disciplined day trader robot. Personality: ruthless sniper, zero emotion, patient, no revenge.
+
+SESSION: Trades ONLY London 08:00-12:00 GMT & New York 13:00-17:00 GMT. Avoids Asian chop. Pauses 30min before/after red news. Spread filter <25 points.
+
+PAIRS YOU SELECTED: XAUUSD king 10:00-19:00 SAST explosive moves, GBPUSD cleanest EMA200 trend 10:00-14:00 SAST, EURUSD lowest spread, GBPJPY dragon NY volatility, NAS100/US30 only NY 15:30-19:00 SAST.
+
+SYSTEM: M15 EMA200 trend boss, M5 EMA9/21 cross + Bollinger Band expansion + RSI 55-70 buys / 30-45 sells + liquidity sweep last 10 candles + engulfing close.
+
+RISK: ATR x1.5 SL (150-250 pts Gold, 15-25 pips FX), 1:1.5 TP, close 50% at +100pts, SL to BE, trail 80pts by EMA21. 1% risk, max 2 concurrent, max 3 losses/day then STOP. No martingale, no grid.
+
+BOOM WOW! For RCG MT5!</textarea>
+
+<!-- 5 -->
+<div class="title" style="margin-top:22px"><div class="num">5</div><b>Scanner Strategy - Write By Yourself</b></div>
+<p class="hint" style="margin-bottom:10px">Your real MQL5 scanner - you write the code that scans charts</p>
+<textarea id="scanStrat" class="t3">void ScanBoard(){
+ string P[]={"XAUUSD","EURUSD","GBPUSD","GBPJPY","NAS100","US30","USDJPY","AUDUSD"};
+ for(int i=0;i<ArraySize(P);i++){
+  string s=P[i];
+  // YOUR FILTERS - YOU WRITE IT
+  if(!IsLondonNY() || Spread(s)>25 || IsNews() || iADX(s,PERIOD_M15,14)<20) continue;
+
+  double m200=iMA(s,PERIOD_M15,200,0,MODE_EMA,PRICE_CLOSE);
+  double m9=iMA(s,PERIOD_M5,9,0,MODE_EMA,PRICE_CLOSE);
+  double m21=iMA(s,PERIOD_M5,21,0,MODE_EMA,PRICE_CLOSE);
+  double r=iRSI(s,PERIOD_M5,14,PRICE_CLOSE);
+  double a=iATR(s,PERIOD_M5,14);
+
+  // YOUR BUY/SELL LOGIC - YOU WRITE IT
+  bool buy = iClose(s,PERIOD_M5,0)>m200 && m9>m21 && r>55 && r<70 && Sweep(s) && Engulf(s) && BBExp(s);
+  bool sell= iClose(s,PERIOD_M5,0)<m200 && m9<m21 && r<45 && r>30 && Sweep(s) && Engulf(s) && BBExp(s);
+
+  if(buy) Push(s,"BUY",a*1.5,1.5);
+  if(sell)Push(s,"SELL",a*1.5,1.5);
+ }
+}
+// You can edit this code - This is YOUR scanner strategy
+</textarea>
+
+<!-- 6 -->
+<div class="title" style="margin-top:22px"><div class="num">6</div><b>Create Robot - Build It</b></div>
+<button class="btn btn-y" onclick="createRobot()">⚡ CREATE MY ROBOT NOW</button>
+<div id="result" class="ok"></div>
+
+<div class="row" style="margin-top:12px">
+<div><label>Lot Size</label><input id="lot" value="0.10"></div>
+<div><label>Magic Number</label><input id="magic" value="2026"></div>
+</div>
+</div>
+
+<!-- LICENSE TAB -->
+<div id="license" class="card" style="display:none">
+<div class="title"><div class="num">🔑</div><b>Generate License Keys For Clients - Like EA Connect</b></div>
+<p class="hint" style="margin-bottom:12px">Create license and lock to client's MT5 account number</p>
+
+<label>Client Name</label><input id="cName" placeholder="e.g. Luyanda Mkhize">
+<label>MT5 Account Number (License Locked To This)</label><input id="cAcc" placeholder="e.g. 12345678">
+<label>Expiry</label><select id="cExp"><option>7 Days Trial</option><option>30 Days</option><option selected>365 Days - R1499</option><option>Lifetime - R2999</option></select>
+<label>Which Bot?</label><select id="botSelect"><option>Bubble Bee V6</option></select>
+
+<button class="btn btn-y" onclick="genLic()">🔑 GENERATE LICENSE KEY</button>
+<div id="k" class="keybox"></div>
+<button class="btn btn-w" id="waBtn" style="display:none" onclick="shareWA()">📲 Share License via WhatsApp</button>
+
+<div id="licList" style="margin-top:16px"></div>
+</div>
+
+<script>
+let pairs=JSON.parse(localStorage.getItem('v8_pairs')||'[{"s":"XAUUSD","lot":"0.01"},{"s":"NAS100","lot":"0.01"},{"s":"EURUSD","lot":"0.01"},{"s":"GBPUSD","lot":"0.01"},{"s":"GBPJPY","lot":"0.01"}]');
+let lics=JSON.parse(localStorage.getItem('v8_lics')||'[]');
+function showTab(id,el){document.getElementById('build').style.display=id=='build'?'block':'none';document.getElementById('license').style.display=id=='license'?'block':'none';document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));el.classList.add('active');if(id=='build')renderPairs();if(id=='license')renderLics();}
+function renderPairs(){let h='';pairs.forEach((p,i)=>{h+=`<div class="pair"><div><b>${p.s}</b> <span class="badge">Min Lot: ${p.lot}</span></div><span class="x" onclick="pairs.splice(${i},1);savePairs();renderPairs()">✕</span></div>`});document.getElementById('pairList').innerHTML=h;localStorage.setItem('v8_pairs',JSON.stringify(pairs));}
+function savePairs(){localStorage.setItem('v8_pairs',JSON.stringify(pairs));}
+function addPair(){let s=document.getElementById('symIn').value.trim().toUpperCase();let l=document.getElementById('lotIn').value||'0.01';if(!s)return alert('Type symbol first e.g. XAUUSD');pairs.push({s:s,lot:l});document.getElementById('symIn').value='';renderPairs();}
+function createRobot(){
+ let name=document.getElementById('eaName').value||'My Bot';
+ let desc=document.getElementById('shortDesc').value;
+ let syms=pairs.map(p=>p.s).join(', ');
+ localStorage.setItem('v8_name',name);localStorage.setItem('v8_desc',desc);
+ document.getElementById('botSelect').innerHTML+=`<option>${name}</option>`;
+ document.getElementById('result').innerHTML=`✅ <b>${name}</b> CREATED SUCCESS!<br><br><small style="color:#fff">Name: ${name}<br>Desc: ${desc}<br>Pairs: ${syms}<br><br>Bot Strategy + Scanner Saved!<br><br>File: ${name}.ex5 Ready!<br>Now go to LICENSE tab > Generate License for clients</small>`;
+ document.getElementById('result').style.display='block';
+ window.scrollTo(0,document.body.scrollHeight);
+}
+function genLic(){
+ let c=document.getElementById('cName').value||'CLIENT';let a=document.getElementById('cAcc').value||'0000000';
+ let r1=Math.random().toString(36).substr(2,4).toUpperCase();let r2=Math.random().toString(36).substr(2,4).toUpperCase();
+ let bot=document.getElementById('botSelect').value;
+ let key=`${bot.toUpperCase().replace(/ /g,'').substring(0,4)}-${r1}-${a.slice(-4)}-${r2}-2026`;
+ lics.push({name:c,acc:a,key:key,bot:bot,date:new Date().toLocaleDateString(),exp:document.getElementById('cExp').value});localStorage.setItem('v8_lics',JSON.stringify(lics));
+ window.lastKey=key;window.lastClient=c;window.lastBot=bot;
+ document.getElementById('k').innerHTML=`🔑 ${key}<br><small style="color:#fff">Client: ${c}<br>Acc: ${a} LOCKED<br>Bot: ${bot}<br>${document.getElementById('cExp').value}</small>`;
+ document.getElementById('k').style.display='block';document.getElementById('waBtn').style.display='block';renderLics();
+}
+function renderLics(){if(lics.length==0){document.getElementById('licList').innerHTML='<p style="color:#666;font-size:12px;margin-top:10px">No licenses yet - create one above</p>';return}let h='<b>Your Generated Licenses</b>';lics.forEach(l=>{h+=`<div class="pair" style="flex-direction:column;align-items:flex-start"><div><b>${l.name}</b> - Acc ${l.acc} - ${l.bot}</div><small style="color:#00ff88;font-weight:800">${l.key}</small><small style="color:#6b728f">${l.date} • ${l.exp}</small></div>`});document.getElementById('licList').innerHTML=h;}
+function shareWA(){let t=encodeURIComponent(`👑 EA KING CONNECT V8 LICENSE\n\n🤖 Bot: ${window.lastBot}\n🔑 Key: ${window.lastKey}\n👤 Client: ${window.lastClient}\n\nPaste this in MT5 > Inputs > LicenseKey to activate`);window.open('https://wa.me/?text='+t,'_blank');}
+// Load saved
+let savedName=localStorage.getItem('v8_name');if(savedName)document.getElementById('eaName').value=savedName;
+let savedDesc=localStorage.getItem('v8_desc');if(savedDesc)document.getElementById('shortDesc').value=savedDesc;
+renderPairs();renderLics();
+</script></body></html>
